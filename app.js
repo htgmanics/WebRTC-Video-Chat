@@ -51,7 +51,7 @@ import { getDatabase, ref, set, onChildAdded } from 'https://www.gstatic.com/fir
 
 	function readCandidateData(snapshot) {
 		const data = snapshot.toJSON();
-    pc.addIceCandidate(new RTCIceCandidate(data));
+		pc.addIceCandidate(new RTCIceCandidate(data));
 	}
 	onChildAdded(ref(db, 'candidate'), readCandidateData);
 
@@ -73,11 +73,12 @@ import { getDatabase, ref, set, onChildAdded } from 'https://www.gstatic.com/fir
 
 	const localVideo = document.getElementById('local');
 	const remoteVideo = document.getElementById('remote');
-  const btnStart = document.getElementById('btn-start');
+	const btnStart = document.getElementById('btn-start');
 	const btnCall = document.getElementById('btn-call');
 
-  btnStart.addEventListener('click', async function(){
-    // setup my video
+	// btnStart.addEventListener('click', );
+	async function setupLocalStream() {
+		// setup my video
 		// add stream to PC
 		const localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
 		localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
@@ -87,9 +88,10 @@ import { getDatabase, ref, set, onChildAdded } from 'https://www.gstatic.com/fir
 
 		pc.ontrack = (e) => {
 			e.streams[0].getTracks().forEach((track) => remoteStream.addTrack(track));
-		};		
-  })
+		};
+	}
 	
+	setupLocalStream();
 
 	btnCall.addEventListener('click', async function() {
 		pc.onicecandidate = (e) => {
